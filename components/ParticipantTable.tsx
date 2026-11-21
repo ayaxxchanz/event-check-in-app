@@ -88,7 +88,7 @@ export function ParticipantTable({
         <p className="mx-auto mt-1 max-w-md text-sm text-slate-500">
           {hasSearchOrFilter
             ? 'Cuba semak ejaan nama atau kosongkan tapisan untuk melihat semua peserta yang berdaftar.'
-            : 'Mula daftarkan peserta walk-in atau jalankan skrip seed untuk mengisi senarai peserta acara.'}
+            : 'Daftarkan peserta pertama anda untuk mula menyambut kehadiran di acara ini.'}
         </p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
           {hasSearchOrFilter ? (
@@ -115,7 +115,6 @@ export function ParticipantTable({
 
   return (
     <div
-      id="senarai-peserta"
       className="overflow-hidden rounded-xl border border-slate-200 bg-white"
     >
       {/* Desktop Table */}

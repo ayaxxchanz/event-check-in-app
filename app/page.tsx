@@ -8,6 +8,7 @@ import {
   UserPlus,
   X,
 } from 'lucide-react';
+import { StoryOrnament } from '@/components/StoryOrnament';
 import { AttendanceSummary } from '@/components/AttendanceSummary';
 import { DeleteConfirmModal } from '@/components/DeleteConfirmModal';
 import { ParticipantModal } from '@/components/ParticipantModal';
@@ -335,204 +336,50 @@ export default function EventCheckInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-3.5 sm:px-6 lg:px-8">
-          <a
-            href="#ringkasan"
-            className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0"
-          >
-            Event Check-In
-          </a>
-
-          <nav
-            aria-label="Navigasi utama"
-            className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600"
-          >
-            <a
-              href="#ringkasan"
-              className="transition-colors hover:text-slate-900 whitespace-nowrap shrink-0"
-            >
-              Ringkasan
-            </a>
-            <a
-              href="#kaunter-carian"
-              className="transition-colors hover:text-slate-900 whitespace-nowrap shrink-0"
-            >
-              Kaunter Carian
-            </a>
-            <a
-              href="#senarai-peserta"
-              className="transition-colors hover:text-slate-900 whitespace-nowrap shrink-0"
-            >
-              Senarai Peserta
-            </a>
-          </nav>
-
-          <div className="flex items-center shrink-0">
-            <button
-              type="button"
-              onClick={() =>
-                setModalState({ isOpen: true, mode: 'create', target: null })
-              }
-              className="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-800 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-            >
-              <UserPlus className="h-4 w-4" aria-hidden="true" />
-              <span>Daftar Walk-In</span>
-            </button>
-          </div>
-        </div>
+    <div className="fable-app">
+      <header className="site-header">
+        <a href="#" className="brand"><span className="brand-seal" aria-hidden="true">E</span><span>Event <em>Check-In</em><small>SETIAP KEHADIRAN, SEBUAH CERITA</small></span></a>
+        <nav aria-label="Navigasi utama" className="header-nav">
+          <a href="#ringkasan">Ringkasan</a><a href="#kaunter-carian">Kaunter Carian</a><a href="#senarai-peserta">Buku Tetamu</a>
+        </nav>
+        <button type="button" className="button button-cream header-cta" onClick={() => setModalState({ isOpen: true, mode: 'create', target: null })}><UserPlus size={16} aria-hidden="true" />Daftar Walk-In</button>
       </header>
 
-      <main className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl [text-wrap:balance]">
-              Sistem Pendaftaran Acara &amp; Kehadiran
-            </h1>
-            <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-600">
-              Kaunter semakan masuk pantas untuk bengkel, seminar, dan aktiviti
-              kolej. Cari nama peserta, tekan Check-In, atau daftar peserta
-              walk-in baharu.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => void fetchPeserta(true)}
-            disabled={isLoading || isRefreshing}
-            className="inline-flex min-h-[40px] items-center justify-center gap-2 self-start rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60 whitespace-nowrap shrink-0 sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
-          >
-            <RefreshCw
-              className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`}
-              aria-hidden="true"
-            />
-            <span>Muat Semula</span>
-          </button>
-        </div>
-
-        {loadError && (
-          <div
-            role="alert"
-            className="flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-800 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div className="flex items-start gap-3">
-              <AlertCircle
-                className="mt-0.5 h-5 w-5 shrink-0 text-red-600"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="font-semibold text-red-900">
-                  Sambungan pangkalan data memerlukan perhatian
-                </p>
-                <p className="mt-0.5 text-red-700">{loadError}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => void fetchPeserta(false)}
-              className="min-h-[38px] self-start rounded-lg border border-red-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100 whitespace-nowrap shrink-0 sm:self-auto"
-            >
-              Cuba Semula
-            </button>
-          </div>
-        )}
-
-        <AttendanceSummary
-          total={totalCount}
-          checkedIn={checkedInCount}
-          isLoading={isLoading}
-        />
-
-        <section
-          id="kaunter-carian"
-          aria-label="Carian dan tapisan peserta"
-          className="space-y-3"
-        >
-          <div className="relative">
-            <Search
-              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
-              aria-hidden="true"
-            />
-            <input
-              ref={searchInputRef}
-              type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari nama peserta dengan pantas di kaunter pendaftaran (tekan / )..."
-              aria-label="Cari nama peserta"
-              className="h-14 w-full rounded-xl border border-slate-300 bg-white pl-12 pr-12 text-base text-slate-900 placeholder:text-slate-400 transition-colors focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-600/15"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery('');
-                  searchInputRef.current?.focus();
-                }}
-                aria-label="Kosongkan carian"
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            )}
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div
-              role="group"
-              aria-label="Tapis status kehadiran"
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-100 p-1"
-            >
-              {(['Semua', 'Belum Hadir', 'Sudah Daftar Masuk'] as const).map(
-                (tab) => {
-                  const active = statusFilter === tab;
-                  return (
-                    <button
-                      key={tab}
-                      type="button"
-                      onClick={() => setStatusFilter(tab)}
-                      className={`min-h-[34px] rounded-md px-3.5 py-1.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
-                        active
-                          ? 'bg-white text-slate-900 shadow-sm'
-                          : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  );
-                }
-              )}
-            </div>
-
-            <p className="text-xs font-medium text-slate-500 font-mono tabular-nums">
-              Menunjukkan {filteredPeserta.length} daripada {totalCount} peserta
-            </p>
-          </div>
+      <main>
+        <section className="hero" aria-labelledby="page-title">
+          <StoryOrnament className="hero-branch hero-branch-left" /><StoryOrnament className="hero-branch hero-branch-right" />
+          <span className="hero-spark spark-one" aria-hidden="true">&#10022;</span><span className="hero-spark spark-two" aria-hidden="true">&#10022;</span>
+          <div className="hero-eyebrow">SELAMAT DATANG KE KAUNTER PENDAFTARAN</div>
+          <h1 id="page-title">Sebuah pertemuan.<br /><em>Seribu cerita.</em></h1>
+          <div className="hero-flourish" aria-hidden="true"><span />&#10022;<span /></div>
+          <p>Raikan setiap ketibaan. Urus pendaftaran dan kehadiran<br className="desktop-break" /> acara anda dengan mudah, dari tetamu pertama hingga yang terakhir.</p>
+          <div className="hero-subtitle">Sistem Pendaftaran Acara &amp; Kehadiran</div>
         </section>
 
-        <ParticipantTable
-          pesertaList={filteredPeserta}
-          isLoading={isLoading}
-          hasSearchOrFilter={
-            searchQuery.trim() !== '' || statusFilter !== 'Semua'
-          }
-          checkingInId={checkingInId}
-          onCheckIn={handleCheckIn}
-          onUndoCheckIn={handleUndoCheckIn}
-          onEdit={(peserta) =>
-            setModalState({ isOpen: true, mode: 'edit', target: peserta })
-          }
-          onDelete={(peserta) => setDeleteTarget(peserta)}
-          onResetFilter={() => {
-            setSearchQuery('');
-            setStatusFilter('Semua');
-          }}
-          onOpenCreate={() =>
-            setModalState({ isOpen: true, mode: 'create', target: null })
-          }
-        />
+        <div className="summary-wrap"><AttendanceSummary total={totalCount} checkedIn={checkedInCount} isLoading={isLoading} /></div>
+
+        <section className="register-stage" aria-labelledby="register-title">
+          <div className="register-inner">
+            <div className="register-heading"><div><p className="eyebrow">BUKU TETAMU ANDA</p><h2 id="register-title">Setiap nama, <em>istimewa.</em></h2><p>Cari peserta dan sambut kehadiran mereka.</p></div>
+              <button type="button" onClick={() => void fetchPeserta(true)} disabled={isLoading || isRefreshing} className="button button-outline"><RefreshCw size={15} className={isRefreshing ? 'animate-spin' : ''} aria-hidden="true" />Muat Semula</button>
+            </div>
+            {loadError && <div role="alert" className="load-error"><AlertCircle size={20} aria-hidden="true" /><div><strong>Senarai peserta tidak dapat dimuatkan</strong><p>{loadError}</p></div><button type="button" className="button button-outline" onClick={() => void fetchPeserta(false)}>Cuba Semula</button></div>}
+            <section id="kaunter-carian" aria-label="Carian dan tapisan peserta" className="search-panel">
+              <div className="search-field"><Search size={21} aria-hidden="true" /><input ref={searchInputRef} type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Cari nama peserta..." aria-label="Cari nama peserta" />
+                {searchQuery ? <button type="button" onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }} aria-label="Kosongkan carian"><X size={17} /></button> : <kbd>/</kbd>}
+              </div>
+              <div className="filter-row"><div role="group" aria-label="Tapis status kehadiran" className="filter-tabs">
+                {(['Semua', 'Belum Hadir', 'Sudah Daftar Masuk'] as const).map((tab) => <button key={tab} type="button" aria-pressed={statusFilter === tab} onClick={() => setStatusFilter(tab)} className={statusFilter === tab ? 'filter-tab active' : 'filter-tab'}>{tab}<span>{tab === 'Semua' ? totalCount : tab === 'Belum Hadir' ? totalCount - checkedInCount : checkedInCount}</span></button>)}
+              </div><p className="result-count" aria-live="polite">{filteredPeserta.length} daripada {totalCount} peserta</p></div>
+            </section>
+            <div id="senarai-peserta" className="guest-register">
+              <ParticipantTable pesertaList={filteredPeserta} isLoading={isLoading} hasSearchOrFilter={searchQuery.trim() !== '' || statusFilter !== 'Semua'} checkingInId={checkingInId} onCheckIn={handleCheckIn} onUndoCheckIn={handleUndoCheckIn} onEdit={(peserta) => setModalState({ isOpen: true, mode: 'edit', target: peserta })} onDelete={(peserta) => setDeleteTarget(peserta)} onResetFilter={() => { setSearchQuery(''); setStatusFilter('Semua'); }} onOpenCreate={() => setModalState({ isOpen: true, mode: 'create', target: null })} />
+            </div>
+            <p className="register-note"><span aria-hidden="true">&#10022;</span> Pertemuan yang indah bermula dengan sambutan yang mesra.</p>
+          </div>
+        </section>
       </main>
+      <footer className="site-footer"><span className="footer-star" aria-hidden="true">&#10022;</span><p>Terima kasih kerana menjadi<br /><em>sebahagian daripada cerita.</em></p><div>EVENT CHECK-IN <span aria-hidden="true">&middot;</span> DICIPTA UNTUK SETIAP PERTEMUAN</div></footer>
 
       <ParticipantModal
         isOpen={modalState.isOpen}

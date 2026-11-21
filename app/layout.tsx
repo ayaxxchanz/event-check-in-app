@@ -1,20 +1,9 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
+import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import './globals.css';
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-jakarta',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-});
+const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'], style: ['normal', 'italic'], variable: '--font-cormorant', display: 'swap' });
+const manrope = Manrope({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-manrope', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Event Check-In App | Sistem Pendaftaran Acara & Kehadiran',
@@ -42,9 +31,9 @@ export default function RootLayout({
   return (
     <html
       lang="ms"
-      className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}
+      className={`${cormorant.variable} ${manrope.variable}`}
     >
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900" suppressHydrationWarning>
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         {children}
       </body>
     </html>
